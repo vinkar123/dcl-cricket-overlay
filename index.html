@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DCL Live Cricket Overlay</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent!important;font-family:Arial,Helvetica,sans-serif}
+#wrap{position:absolute;left:2vw;right:2vw;bottom:2vh;color:#fff;filter:drop-shadow(0 3px 7px rgba(0,0,0,.35))}
+.ribbon{display:grid;grid-template-columns:1.15fr 1.15fr 1.7fr;min-height:86px;border-radius:13px 13px 0 0;overflow:hidden}
+.team{background:rgba(5,24,57,.94);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-right:1px solid rgba(255,255,255,.16)}
+.team.active{background:rgba(10,65,91,.96)}
+.team-name{font-size:21px;font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score{text-align:right;white-space:nowrap}.score-main{font-size:29px;line-height:1;font-weight:900}.overs{margin-top:6px;color:#c8d7e8;font-size:15px;font-weight:700}
+.matchbox{background:linear-gradient(105deg,rgba(10,65,91,.96),rgba(5,24,57,.94));padding:12px 18px;display:flex;flex-direction:column;justify-content:center}
+.need{font-size:19px;font-weight:800;line-height:1.25}.rrr{margin-top:6px;color:#ffd27a;font-size:15px;font-weight:800}
+.lower{background:rgba(245,248,252,.97);color:#0a2440;min-height:44px;border-radius:0 0 13px 13px;display:grid;grid-template-columns:1.55fr 1.15fr 1.3fr;align-items:center;gap:12px;padding:0 16px;font-size:14px;font-weight:700}
+.balls{display:flex;gap:6px;align-items:center;white-space:nowrap;overflow:hidden}.ball{min-width:25px;height:25px;padding:0 4px;border-radius:14px;background:#dfe7ef;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900}.ball.w{background:#cc2f3f;color:#fff}.ball.boundary{background:#0b6c91;color:#fff}.ball.extra{background:#e7a629;color:#10233d}
+#error{display:none;background:#7c1d1d;color:#fff;padding:12px 16px;border-radius:10px;font-size:14px}
+@media(max-width:900px){.team-name{font-size:16px}.score-main{font-size:23px}.need{font-size:15px}.lower{font-size:12px}}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="error"></div>
+  <div id="board">
+    <div class="ribbon">
+      <div class="team" id="team1box"><div class="team-name" id="team1">TEAM 1</div><div class="score"><div class="score-main" id="score1">0/0</div><div class="overs" id="overs1">0.0 overs</div></div></div>
+      <div class="team" id="team2box"><div class="team-name" id="team2">TEAM 2</div><div class="score"><div class="score-main" id="score2">0/0</div><div class="overs" id="overs2">0.0 overs</div></div></div>
+      <div class="matchbox"><div class="need" id="message">Loading live score…</div><div class="rrr" id="rrr"></div></div>
+    </div>
+    <div class="lower"><div id="batters">BATTERS: —</div><div id="bowler">BOWLER: —</div><div class="balls"><span>THIS OVER:</span><span id="balls"></span></div></div>
+  </div>
+</div>
+<script>
+const qs=new URLSearchParams(location.search);
+const matchId=(qs.get('match')||'5923').replace(/[^0-9]/g,'');
+const refreshMs=Math.max(2000,Number(qs.get('refresh')||4000));
+const apiUrl=`/.netlify/functions/score?match=${matchId}`;
+
+function deepFind(obj,key){if(!obj||typeof obj!=='object')return undefined;if(Object.prototype.hasOwnProperty.call(obj,key))return obj[key];for(const v of Object.values(obj)){const f=deepFind(v,key);if(f!==undefined)return f}}
+function findObjectContaining(obj,key){if(!obj||typeof obj!=='object')return null;if(Object.prototype.hasOwnProperty.call(obj,key))return obj;for(const v of Object.values(obj)){const f=findObjectContaining(v,key);if(f)return f}return null}
+function parseScoreDetails(raw){if(!raw)return{};if(typeof raw==='object')return raw;try{return JSON.parse(raw)}catch{return{}}}
+function shortName(n){return n?n.replace(/\s+/g,' ').trim():'—'}
+function ballClass(v){const s=String(v).toLowerCase();if(s.includes('w'))return'ball w';if(s==='4'||s==='6')return'ball boundary';if(/[a-z]/.test(s))return'ball extra';return'ball'}
+
+function render(payload){
+ const host=findObjectContaining(payload,'score_details')||payload;
+ const details=parseScoreDetails(host.score_details??deepFind(payload,'score_details'));
+ const extra=details.extraDetails||host.extraDetails||deepFind(payload,'extraDetails')||{};
+ const active=Number(details.activeInnings||host.activeInnings||deepFind(payload,'activeInnings')||1);
+ const i1=details.inning1||{}, i2=details.inning2||{};
+ const team1=extra.team1||i1.teamName||'TEAM 1', team2=extra.team2||i2.teamName||'TEAM 2';
+ const s1=extra.team1Score||`${i1.runs??0}/${i1.wickets??0}`, s2=extra.team2Score||`${i2.runs??0}/${i2.wickets??0}`;
+ const o1=extra.team1Overs??i1.overs??0, o2=extra.team2Overs??i2.overs??0;
+ team1box.classList.toggle('active',active===1);team2box.classList.toggle('active',active===2);
+ document.getElementById('team1').textContent=team1;document.getElementById('team2').textContent=team2;
+ document.getElementById('score1').textContent=s1;document.getElementById('score2').textContent=s2;
+ document.getElementById('overs1').textContent=`${o1} overs`;document.getElementById('overs2').textContent=`${o2} overs`;
+ document.getElementById('message').textContent=extra.message||(active===1?`${team1} batting`:`${team2} batting`);
+ const inn=details[`inning${active}`]||{}, b1=inn.batter1||{}, b2=inn.batter2||{}, bow=inn.bowler||{};
+ const bt=[b1,b2].filter(x=>x.name).map(x=>`${shortName(x.name)} ${x.run??0}${x.onStrike?'*':''} (${x.ball??0})`).join('  |  ');
+ document.getElementById('batters').textContent=bt?`BATTERS: ${bt}`:'BATTERS: —';
+ document.getElementById('bowler').textContent=bow.name?`BOWLER: ${shortName(bow.name)} ${bow.wicket??0}/${bow.run??0} (${bow.over??0})`:'BOWLER: —';
+ const stack=inn.currentRunStack||[]; const balls=document.getElementById('balls'); balls.innerHTML='';
+ stack.slice(-10).forEach(v=>{const e=document.createElement('span');e.className=ballClass(v);e.textContent=String(v).toUpperCase();balls.appendChild(e)});
+ if(!stack.length)balls.textContent='—';
+ const target=(details.inning1?.runs??0)+1, need=Math.max(0,target-(inn.runs??0));
+ if(active===2){const ov=Number(inn.overs||0), whole=Math.floor(ov), bp=Math.round((ov-whole)*10), left=Math.max(0,120-(whole*6+bp));document.getElementById('rrr').textContent=left&&need?`RRR ${(need/(left/6)).toFixed(2)}`:''} else document.getElementById('rrr').textContent='';
+ document.getElementById('error').style.display='none';
+}
+async function load(){try{const r=await fetch(apiUrl,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);render(await r.json())}catch(e){const er=document.getElementById('error');er.style.display='block';er.textContent='Unable to load DCL score: '+e.message}}
+load();setInterval(load,refreshMs);
+</script>
+</body>
+</html>
