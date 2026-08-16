@@ -213,6 +213,67 @@ html,body{
   .info-right{font-size:13px !important;}
 }
 
+
+/* HIGH-CONTRAST FIX: Extras + Partnership must always be visible */
+.infobar{
+  background:rgba(7,26,50,.985) !important;
+  color:#ffffff !important;
+  overflow:visible !important;
+}
+#extrasInfo{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  color:#ffffff !important;
+  background:rgba(42,163,214,.22) !important;
+  border-left:4px solid #2aa3d6 !important;
+  border-radius:5px !important;
+  padding:6px 9px !important;
+  font-size:17px !important;
+  font-weight:900 !important;
+  line-height:1.1 !important;
+  white-space:nowrap !important;
+}
+#partnershipInfo{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  color:#ffffff !important;
+  background:rgba(241,173,43,.20) !important;
+  border-left:4px solid #f1ad2b !important;
+  border-radius:5px !important;
+  padding:6px 9px !important;
+  font-size:18px !important;
+  font-weight:900 !important;
+  line-height:1.1 !important;
+  white-space:nowrap !important;
+}
+#equation{
+  color:#ffffff !important;
+}
+@media(max-width:900px){
+  .infobar{
+    min-height:48px !important;
+    grid-template-columns:1.45fr 1.05fr 1.55fr 1.2fr !important;
+    column-gap:7px !important;
+    padding:4px 8px !important;
+  }
+  #extrasInfo{
+    font-size:15px !important;
+    padding:5px 6px !important;
+  }
+  #partnershipInfo{
+    font-size:16px !important;
+    padding:5px 6px !important;
+  }
+  #equation{
+    font-size:16px !important;
+  }
+  .info-right{
+    font-size:13px !important;
+  }
+}
+
 </style>
 </head>
 <body>
