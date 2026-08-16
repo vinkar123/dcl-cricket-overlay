@@ -5,31 +5,191 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DCL Modern Live Overlay</title>
 <style>
-:root{--left:#0d3d68;--right:#136f82;--dark:#061a31;--light:#fff}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent!important;font-family:Arial,Helvetica,sans-serif}
-#brand{position:absolute;left:1.4vw;top:1.4vh;width:76px;height:76px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.93);border-radius:10px;padding:4px;box-sizing:border-box;filter:drop-shadow(0 2px 6px rgba(0,0,0,.28))}
-#brand img{width:100%;height:100%;object-fit:contain;border-radius:7px}
-#overlay{position:absolute;left:1.2vw;right:1.2vw;bottom:1.1vh;filter:drop-shadow(0 3px 8px rgba(0,0,0,.38))}
-#err{display:none;margin-bottom:3px;background:#8b1e25;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px}
-.mainbar{height:42px;display:grid;grid-template-columns:44px 1.12fr .82fr 1.08fr 44px;align-items:stretch;color:#fff;border-radius:7px 7px 0 0;overflow:hidden;background:linear-gradient(90deg,var(--left) 0%,#174f82 28%,#12658b 52%,#177888 72%,var(--right) 100%)}
-.logo-cell{display:grid;place-items:center;background:rgba(255,255,255,.12)}
-.team-logo{width:34px;height:34px;border-radius:50%;object-fit:contain;background:#fff;padding:2px;box-sizing:border-box}
-.batters,.bowling{display:flex;align-items:center;gap:13px;padding:0 10px;min-width:0}
+:root{
+  --left:#174f82;
+  --left2:#2c7aa8;
+  --right:#167887;
+  --right2:#2ba0a8;
+  --center:#103962;
+  --center2:#0d5f87;
+  --deep:#06172b;
+}
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;
+  background:transparent!important;
+  font-family:Arial,Helvetica,sans-serif
+}
+#brand{
+  position:absolute;left:1.15vw;top:1.15vh;
+  width:66px;height:66px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.93);
+  border-radius:9px;padding:3px;box-sizing:border-box;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.28))
+}
+#brand img{width:100%;height:100%;object-fit:contain;border-radius:6px}
+
+#overlay{
+  position:absolute;left:1vw;right:1vw;bottom:.8vh;
+  filter:drop-shadow(0 3px 8px rgba(0,0,0,.38))
+}
+#err{
+  display:none;margin-bottom:2px;background:#8b1e25;color:#fff;
+  padding:5px 8px;border-radius:5px;font-size:10px
+}
+
+/* PRIMARY RIBBON — intentionally thin */
+.mainbar{
+  position:relative;
+  height:36px;
+  display:grid;
+  grid-template-columns:40px 1.12fr .72fr 1.08fr 40px;
+  align-items:stretch;
+  color:#fff;
+  border-radius:7px 7px 0 0;
+  overflow:hidden;
+  isolation:isolate
+}
+.mainbar::before{
+  content:"";
+  position:absolute;inset:0;z-index:-3;
+  background:
+    linear-gradient(100deg,
+      var(--left) 0%,
+      var(--left2) 25%,
+      var(--center) 45%,
+      var(--center2) 55%,
+      var(--right2) 75%,
+      var(--right) 100%)
+}
+.mainbar::after{
+  content:"";
+  position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.14),transparent 48%),
+    repeating-linear-gradient(118deg,transparent 0 36px,rgba(255,255,255,.045) 36px 38px)
+}
+
+.logo-cell{
+  position:relative;display:grid;place-items:center;
+  background:rgba(0,0,0,.08);overflow:hidden
+}
+.logo-cell.left::after,.logo-cell.right::before{
+  content:"";position:absolute;top:0;bottom:0;width:16px;
+  background:linear-gradient(135deg,rgba(255,255,255,.18),transparent)
+}
+.logo-cell.left::after{right:-7px;transform:skewX(-18deg)}
+.logo-cell.right::before{left:-7px;transform:skewX(-18deg)}
+
+.team-logo{
+  width:30px;height:30px;border-radius:50%;
+  object-fit:contain;background:rgba(255,255,255,.96);
+  padding:2px;box-sizing:border-box;
+  box-shadow:0 1px 3px rgba(0,0,0,.3);z-index:2
+}
+
+.batters,.bowling{
+  position:relative;display:flex;align-items:center;gap:10px;
+  padding:0 9px;min-width:0
+}
 .bowling{justify-content:flex-end;text-align:right}
-.player{display:flex;align-items:baseline;gap:4px;min-width:0;white-space:nowrap}
-.pname{font-size:11px;font-weight:900;overflow:hidden;text-overflow:ellipsis}
-.pstat{font-size:10px;font-weight:800;color:#d9efff}
-.center{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(4,27,58,.46);clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
-.abbr{font-size:12px;font-weight:900}.score{font-size:21px;font-weight:900}.overs{font-size:9px;font-weight:800;color:#d7e9f8}
-.bowler{font-size:11px;font-weight:900;white-space:nowrap}.bowlstat{font-size:10px;color:#d9efff;font-weight:800;white-space:nowrap}
-.secondbar{height:23px;display:grid;grid-template-columns:1.1fr 1.2fr 1.15fr 1.55fr;align-items:center;background:rgba(5,24,49,.97);color:#fff;border-radius:0 0 7px 7px;padding:0 9px;font-size:9.5px;font-weight:800;letter-spacing:.05px}
-.secondbar>div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.batters::after,.bowling::before{
+  content:"";position:absolute;top:0;bottom:0;width:25px;pointer-events:none
+}
+.batters::after{
+  right:-13px;transform:skewX(-18deg);
+  background:linear-gradient(120deg,rgba(255,255,255,.12),transparent 65%)
+}
+.bowling::before{
+  left:-13px;transform:skewX(-18deg);
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.12) 65%)
+}
+
+.player{
+  display:flex;align-items:baseline;gap:3px;min-width:0;white-space:nowrap
+}
+.pname{
+  font-size:9.5px;font-weight:900;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 1px rgba(0,0,0,.25)
+}
+.pstat{font-size:8.8px;font-weight:800;color:#eef8ff}
+
+.center{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(135deg,rgba(4,24,51,.72),rgba(8,64,105,.68));
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+  box-shadow:inset 1px 0 rgba(255,255,255,.1),inset -1px 0 rgba(255,255,255,.1)
+}
+.center::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),transparent 48%);
+  pointer-events:none
+}
+.abbr{font-size:10px;font-weight:900;z-index:1}
+.score{font-size:18px;font-weight:900;line-height:1;z-index:1}
+.overs{font-size:8px;font-weight:800;color:#d9ecf9;z-index:1}
+
+.bowler{
+  font-size:9.5px;font-weight:900;white-space:nowrap;
+  text-shadow:0 1px 1px rgba(0,0,0,.25)
+}
+.bowlstat{font-size:8.8px;color:#eef8ff;font-weight:800;white-space:nowrap}
+
+/* SECOND RIBBON — directly attached, no gap */
+.secondbar{
+  height:18px;
+  display:grid;
+  grid-template-columns:1.1fr 1.05fr 1.28fr 1.57fr;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  color:#fff;
+  border-top:1px solid rgba(255,255,255,.08);
+  border-radius:0 0 7px 7px;
+  padding:0 8px;
+  font-size:8px;font-weight:800;letter-spacing:.03px;
+  background:
+    linear-gradient(90deg,
+      color-mix(in srgb,var(--left) 34%,#06172b) 0%,
+      #06172b 39%,
+      #06172b 61%,
+      color-mix(in srgb,var(--right) 34%,#06172b) 100%)
+}
+.secondbar::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),transparent);
+  pointer-events:none
+}
+.secondbar>div{
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:1
+}
 .mid{text-align:center}.right{text-align:right}
-.balls{display:inline-flex;gap:3px;vertical-align:middle;margin-left:4px}
-.ball{min-width:16px;height:16px;padding:0 2px;border-radius:8px;background:#e7edf4;color:#14263c;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:900}
-.ball.w{background:#c93d4b;color:#fff}.ball.boundary{background:#2aa3d6;color:#fff}.ball.extra{background:#f1ad2b;color:#14263c}
-.sep{opacity:.45;margin:0 5px}
-@media(max-width:900px){.mainbar{grid-template-columns:38px 1.05fr .88fr 1.05fr 38px}.team-logo{width:30px;height:30px}.batters,.bowling{gap:7px;padding:0 6px}.pname,.bowler{font-size:9px}.pstat,.bowlstat{font-size:8px}.score{font-size:18px}.secondbar{font-size:8px}}
+
+.balls{
+  display:inline-flex;gap:2px;vertical-align:middle;margin-left:3px
+}
+.ball{
+  min-width:13px;height:13px;padding:0 2px;border-radius:7px;
+  background:rgba(255,255,255,.92);color:#14263c;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:7px;font-weight:900;
+  box-shadow:0 1px 2px rgba(0,0,0,.16)
+}
+.ball.w{background:#c93d4b;color:#fff}
+.ball.boundary{background:#2aa3d6;color:#fff}
+.ball.extra{background:#f1ad2b;color:#14263c}
+.sep{opacity:.38;margin:0 4px}
+
+@media(max-width:900px){
+  .mainbar{grid-template-columns:34px 1.06fr .78fr 1.05fr 34px;height:34px}
+  .team-logo{width:27px;height:27px}
+  .batters,.bowling{gap:6px;padding:0 6px}
+  .pname,.bowler{font-size:8px}
+  .pstat,.bowlstat{font-size:7.4px}
+  .score{font-size:16px}
+  .secondbar{font-size:7px;height:17px}
+}
 </style>
 </head>
 <body>
@@ -44,7 +204,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent
 <div id="overlay">
   <div id="err"></div>
   <div class="mainbar">
-    <div class="logo-cell"><img id="batLogo" class="team-logo" alt=""></div>
+    <div class="logo-cell left"><img id="batLogo" class="team-logo" alt=""></div>
     <div class="batters">
       <div class="player"><span id="b1name" class="pname">Batter 1</span><span id="b1stat" class="pstat">0 (0)</span></div>
       <div class="player"><span id="b2name" class="pname">Batter 2</span><span id="b2stat" class="pstat">0 (0)</span></div>
@@ -58,7 +218,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent
       <span id="bowlerName" class="bowler">Bowler</span>
       <span id="bowlerStat" class="bowlstat">0/0 (0.0)</span>
     </div>
-    <div class="logo-cell"><img id="bowlLogo" class="team-logo" alt=""></div>
+    <div class="logo-cell right"><img id="bowlLogo" class="team-logo" alt=""></div>
   </div>
   <div class="secondbar">
     <div id="extras">EXTRAS 0 • WD 0 NB 0 B 0 LB 0</div>
@@ -78,6 +238,55 @@ function parse(x){if(!x)return{};if(typeof x==='object')return x;try{return JSON
 function clean(x){return String(x??'').replace(/\s+/g,' ').trim()}
 function abbr(n){const w=clean(n).split(' ').filter(Boolean);return (w.length===1?w[0].slice(0,3):w.map(x=>x[0]).join('').slice(0,4)).toUpperCase()}
 function logo(p){return p?`/.netlify/functions/score?logo=${encodeURIComponent(p)}`:''}
+
+function clamp(v){return Math.max(0,Math.min(255,v))}
+function rgbToHex(r,g,b){
+  return '#'+[r,g,b].map(v=>clamp(Math.round(v)).toString(16).padStart(2,'0')).join('');
+}
+function mix(c1,c2,t){
+  const a=[parseInt(c1.slice(1,3),16),parseInt(c1.slice(3,5),16),parseInt(c1.slice(5,7),16)];
+  const b=[parseInt(c2.slice(1,3),16),parseInt(c2.slice(3,5),16),parseInt(c2.slice(5,7),16)];
+  return rgbToHex(a[0]*(1-t)+b[0]*t,a[1]*(1-t)+b[1]*t,a[2]*(1-t)+b[2]*t);
+}
+function pleasant(hex){
+  // Pull extreme colors slightly toward a broadcast-friendly mid tone.
+  return mix(hex,'#1f5f7f',0.24);
+}
+function extractLogoColor(img,fallback){
+  try{
+    const c=document.createElement('canvas'),ctx=c.getContext('2d',{willReadFrequently:true});
+    c.width=40;c.height=40;ctx.drawImage(img,0,0,40,40);
+    const d=ctx.getImageData(0,0,40,40).data;
+    let buckets=new Map();
+    for(let i=0;i<d.length;i+=16){
+      const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];
+      if(a<180)continue;
+      const max=Math.max(r,g,b),min=Math.min(r,g,b);
+      if(max>235&&min>225)continue; // white
+      if(max<35)continue; // near black
+      const sat=max-min;
+      if(sat<28)continue; // gray
+      const qr=Math.round(r/32)*32,qg=Math.round(g/32)*32,qb=Math.round(b/32)*32;
+      const k=`${qr},${qg},${qb}`;
+      buckets.set(k,(buckets.get(k)||0)+1);
+    }
+    let best=null,count=-1;
+    for(const [k,v] of buckets){if(v>count){best=k;count=v}}
+    if(!best)return fallback;
+    const [r,g,b]=best.split(',').map(Number);
+    return pleasant(rgbToHex(r,g,b));
+  }catch{return fallback}
+}
+function applyLogoColors(){
+  const root=document.documentElement;
+  const l=extractLogoColor(batLogo,'#174f82');
+  const r=extractLogoColor(bowlLogo,'#167887');
+  root.style.setProperty('--left',l);
+  root.style.setProperty('--left2',mix(l,'#ffffff',0.18));
+  root.style.setProperty('--right',r);
+  root.style.setProperty('--right2',mix(r,'#ffffff',0.18));
+}
+
 function bclass(v){const s=String(v).toLowerCase();if(s.includes('w'))return'ball w';if(s==='4'||s==='6')return'ball boundary';if(/[a-z]/.test(s))return'ball extra';return'ball'}
 function ballsLeft(ov,max=20){ov=Number(ov||0);const w=Math.floor(ov),b=Math.round((ov-w)*10);return Math.max(0,max*6-(w*6+b))}
 function num(v,d=0){const n=Number(v);return Number.isFinite(n)?n:d}
@@ -92,7 +301,9 @@ function render(payload){
  const t1=e.team1||i1.teamName||'Team 1',t2=e.team2||i2.teamName||'Team 2';
  const batting=a===1?t1:t2;
  const lp=a===1?e.team1Logo:e.team2Logo, rp=a===1?e.team2Logo:e.team1Logo;
- batLogo.src=logo(lp||'');bowlLogo.src=logo(rp||'');batLogo.style.display=lp?'block':'none';bowlLogo.style.display=rp?'block':'none';
+ batLogo.onload=applyLogoColors;bowlLogo.onload=applyLogoColors;
+ batLogo.src=logo(lp||'');bowlLogo.src=logo(rp||'');
+ batLogo.style.display=lp?'block':'none';bowlLogo.style.display=rp?'block':'none';
 
  const b1=inn.batter1||{},b2=inn.batter2||{},bw=inn.bowler||{};
  b1name.textContent=clean(b1.name)||'BATTER 1'; b2name.textContent=clean(b2.name)||'BATTER 2';
