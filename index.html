@@ -6,133 +6,122 @@
 <title>DCL Modern Live Overlay</title>
 <style>
 :root{
-  --left:#a82034;
-  --left2:#d44758;
-  --right:#175d9d;
-  --right2:#2f8bd2;
-  --mid:#0a3157;
-  --deep:#06172b;
+  --navy:#071a32;
+  --navy2:#0b2e4b;
+  --blue:#0e5b93;
+  --cyan:#2aa3d6;
+  --light:#f7f9fc;
+  --ink:#0e2035;
+  --muted:#52657b;
+  --gold:#f1ad2b;
+  --danger:#c93d4b;
 }
 html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  background:transparent!important;
+  margin:0;width:100%;height:100%;overflow:hidden;background:transparent!important;
   font-family:Arial,Helvetica,sans-serif
 }
 #brand{
-  position:absolute;left:1.0vw;top:1.0vh;
-  width:62px;height:62px;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.93);
-  border-radius:8px;padding:3px;box-sizing:border-box;
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,.28))
+  position:absolute; left:1.6vw; top:1.6vh;
+  width:88px; height:88px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.94);
+  border-radius:12px;
+  padding:5px;
+  box-sizing:border-box;
+  filter:drop-shadow(0 3px 8px rgba(0,0,0,.28));
 }
-#brand img{width:100%;height:100%;object-fit:contain;border-radius:6px}
-
+#brand img{
+  width:100%; height:100%; object-fit:contain; border-radius:9px;
+}
 #overlay{
-  position:absolute;left:.9vw;right:.9vw;bottom:.65vh;
-  filter:drop-shadow(0 3px 7px rgba(0,0,0,.38))
+  position:absolute; left:1.4vw; right:1.4vw; bottom:1.2vh;
+  filter:drop-shadow(0 3px 8px rgba(0,0,0,.35));
 }
-#err{display:none;margin-bottom:2px;background:#8b1e25;color:#fff;padding:4px 7px;border-radius:5px;font-size:9px}
-
-/* ONE continuous graphic unit: 30px primary + 15px secondary */
+#err{
+  display:none; margin-bottom:4px;
+  background:#7f1d1d;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px
+}
 .mainbar{
-  position:relative;
-  height:30px;
+  height:58px;
   display:grid;
-  grid-template-columns:34px 1.18fr .64fr 1.10fr 34px;
-  align-items:stretch;
-  color:#fff;
-  border-radius:6px 6px 0 0;
+  grid-template-columns: 1.12fr 1fr 1.12fr;
+  border-radius:10px 10px 0 0;
   overflow:hidden;
-  isolation:isolate
 }
-.mainbar::before{
-  content:"";position:absolute;inset:0;z-index:-3;
-  background:
-    linear-gradient(90deg,
-      var(--left) 0%,
-      var(--left2) 27%,
-      var(--mid) 47%,
-      var(--mid) 53%,
-      var(--right2) 73%,
-      var(--right) 100%)
+.side{
+  background:rgba(248,250,253,.97);
+  color:var(--ink);
+  display:flex;align-items:center;gap:10px;
+  padding:5px 10px;
 }
-.mainbar::after{
-  content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.14),transparent 48%),
-    repeating-linear-gradient(118deg,transparent 0 42px,rgba(255,255,255,.045) 42px 44px)
-}
-.logo-cell{display:grid;place-items:center;position:relative;background:rgba(0,0,0,.06)}
+.side.right{justify-content:flex-end}
 .team-logo{
-  width:25px;height:25px;border-radius:50%;object-fit:contain;
-  background:rgba(255,255,255,.96);padding:1.5px;box-sizing:border-box;
-  box-shadow:0 1px 2px rgba(0,0,0,.26)
+  width:42px;height:42px;border-radius:50%;
+  object-fit:contain;background:white;border:1px solid #d8e0e8;padding:3px;box-sizing:border-box;flex:0 0 auto;
 }
-.batters,.bowling{
-  display:flex;align-items:center;gap:11px;
-  padding:0 8px;min-width:0;position:relative
+.player-block{min-width:0;flex:1}
+.player-line{
+  display:flex;align-items:baseline;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
-.bowling{justify-content:flex-end;text-align:right}
-.player{display:flex;align-items:baseline;gap:3px;white-space:nowrap;min-width:0}
-.pname,.bowler{
-  font-size:8.5px;font-weight:900;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 1px rgba(0,0,0,.25)
+.player-name{
+  font-size:13px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
-.pstat,.bowlstat{font-size:7.7px;font-weight:800;color:#eef8ff;white-space:nowrap}
-
-.center{
-  display:flex;align-items:center;justify-content:center;gap:5px;position:relative;
-  background:linear-gradient(135deg,rgba(3,20,44,.72),rgba(7,57,96,.72));
-  clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%)
+.player-stat{
+  font-size:12px;color:var(--muted);font-weight:800
 }
-.center::before{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.13),transparent 48%)
+.subline{
+  margin-top:3px;font-size:11px;color:var(--muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
-.abbr{font-size:8.5px;font-weight:900;z-index:1}
-.score{font-size:15px;font-weight:900;line-height:1;z-index:1}
-.overs{font-size:6.8px;font-weight:800;color:#dbeef9;z-index:1}
-
-/* Thin line 2 - directly attached, same visual language */
-.secondbar{
-  height:15px;
-  display:grid;
-  grid-template-columns:1.12fr .82fr 1.30fr 1.55fr;
-  align-items:center;
+.center-score{
+  background:linear-gradient(135deg,var(--blue),#143c75);
   color:#fff;
-  border-top:1px solid rgba(255,255,255,.08);
-  border-radius:0 0 6px 6px;
-  padding:0 7px;
-  font-size:6.9px;font-weight:800;letter-spacing:.02px;
-  overflow:hidden;
-  background:
-    linear-gradient(90deg,
-      color-mix(in srgb,var(--left) 28%,#06172b) 0%,
-      #06172b 35%,
-      #06172b 65%,
-      color-mix(in srgb,var(--right) 28%,#06172b) 100%)
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:center;gap:9px;
+  padding:5px 11px;
+  border-left:2px solid rgba(255,255,255,.15);
+  border-right:2px solid rgba(255,255,255,.15);
 }
-.secondbar>div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mid{text-align:center}.right{text-align:right}
-.balls{display:inline-flex;gap:2px;vertical-align:middle;margin-left:2px}
+.center-team{
+  font-size:18px;font-weight:900;letter-spacing:.3px;text-transform:uppercase;
+}
+.score-stack{text-align:center}
+.big-score{font-size:27px;font-weight:900;line-height:1}
+.score-meta{font-size:11px;font-weight:800;color:#d8ecff;margin-top:2px}
+.rate{
+  text-align:right;font-size:11px;font-weight:800;color:#d8ecff;line-height:1.3
+}
+.infobar{
+  min-height:25px;
+  background:rgba(7,26,50,.98);
+  color:white;
+  display:grid;
+  grid-template-columns:1.15fr 1.6fr 1.25fr;
+  align-items:center;
+  padding:0 9px;
+  border-radius:0 0 10px 10px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.1px;
+}
+.info-left{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info-mid{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info-right{display:flex;justify-content:flex-end;align-items:center;gap:5px;overflow:hidden}
 .ball{
-  min-width:11px;height:11px;padding:0 1px;border-radius:6px;
-  background:rgba(255,255,255,.92);color:#14263c;
+  min-width:20px;height:20px;padding:0 4px;border-radius:10px;
   display:inline-flex;align-items:center;justify-content:center;
-  font-size:5.8px;font-weight:900
+  background:#e8eef4;color:#14263c;font-size:10px;font-weight:900
 }
-.ball.w{background:#c93d4b;color:#fff}
-.ball.boundary{background:#2aa3d6;color:#fff}
-.ball.extra{background:#f1ad2b;color:#14263c}
-.sep{opacity:.35;margin:0 3px}
-
+.ball.w{background:var(--danger);color:white}
+.ball.boundary{background:var(--cyan);color:white}
+.ball.extra{background:var(--gold);color:#1c2a3d}
+.label{color:#9eb9d2;margin-right:2px}
 @media(max-width:900px){
-  .mainbar{height:29px;grid-template-columns:31px 1.13fr .69fr 1.09fr 31px}
-  .team-logo{width:23px;height:23px}
-  .batters,.bowling{gap:7px;padding:0 5px}
-  .pname,.bowler{font-size:7.5px}.pstat,.bowlstat{font-size:6.8px}
-  .score{font-size:14px}.secondbar{height:14px;font-size:6.3px}
+  .mainbar{height:54px}
+  .team-logo{width:38px;height:38px}
+  .center-team{font-size:15px}
+  .big-score{font-size:23px}
+  .player-name{font-size:12px}
+  .infobar{font-size:10px}
 }
 </style>
 </head>
@@ -147,196 +136,203 @@ html,body{
 
 <div id="overlay">
   <div id="err"></div>
+
   <div class="mainbar">
-    <div class="logo-cell left"><img id="batLogo" class="team-logo" alt=""></div>
-    <div class="batters">
-      <div class="player"><span id="b1name" class="pname">Batter 1</span><span id="b1stat" class="pstat">0 (0)</span></div>
-      <div class="player"><span id="b2name" class="pname">Batter 2</span><span id="b2stat" class="pstat">0 (0)</span></div>
+    <div class="side">
+      <img id="batLogo" class="team-logo" alt="">
+      <div class="player-block">
+        <div class="player-line">
+          <span id="b1name" class="player-name">Batter 1</span>
+          <span id="b1stat" class="player-stat">0 (0)</span>
+        </div>
+        <div class="player-line">
+          <span id="b2name" class="player-name">Batter 2</span>
+          <span id="b2stat" class="player-stat">0 (0)</span>
+        </div>
+        <div id="battingTeamLabel" class="subline">Batting side</div>
+      </div>
     </div>
-    <div class="center">
-      <span id="teamShort" class="abbr">TEAM</span>
-      <span id="mainScore" class="score">0/0</span>
-      <span id="mainOvers" class="overs">0.0 OV</span>
+
+    <div class="center-score">
+      <div id="teamShort" class="center-team">TEAM</div>
+      <div class="score-stack">
+        <div id="mainScore" class="big-score">0/0</div>
+        <div id="mainOvers" class="score-meta">OVERS 0.0</div>
+      </div>
+      <div class="rate">
+        <div id="crr">CRR 0.00</div>
+        <div id="rrr">RRR —</div>
+      </div>
     </div>
-    <div class="bowling">
-      <span id="bowlerName" class="bowler">Bowler</span>
-      <span id="bowlerStat" class="bowlstat">0/0 (0.0)</span>
+
+    <div class="side right">
+      <div class="player-block">
+        <div class="player-line" style="justify-content:flex-end">
+          <span id="bowlerName" class="player-name">Bowler</span>
+          <span id="bowlerStat" class="player-stat">0/0 (0.0)</span>
+        </div>
+        <div id="bowlingTeamLabel" class="subline" style="text-align:right">Bowling side</div>
+      </div>
+      <img id="bowlLogo" class="team-logo" alt="">
     </div>
-    <div class="logo-cell right"><img id="bowlLogo" class="team-logo" alt=""></div>
   </div>
-  <div class="secondbar">
-    <div id="extras">EXTRAS 0 • WD 0 NB 0 B 0 LB 0</div>
-    <div id="partnership" class="mid">CP - 0 R IN 0 B</div>
-    <div id="chase" class="mid"></div>
-    <div class="right"><span id="rates">CRR —</span><span class="sep">|</span><span>THIS OVER</span><span id="balls" class="balls"></span></div>
+
+  <div class="infobar">
+    <div id="inningsContext" class="info-left">FIRST INNINGS</div>
+    <div id="equation" class="info-mid">Match information loading…</div>
+    <div class="info-right">
+      <span class="label">THIS OVER</span>
+      <span id="balls"></span>
+    </div>
   </div>
 </div>
+
 <script>
-const qs=new URLSearchParams(location.search);
-const matchId=(qs.get('match')||'5923').replace(/[^0-9]/g,'');
-const refreshMs=Math.max(2000,Number(qs.get('refresh')||2000));
-const apiUrl=`/.netlify/functions/score?match=${matchId}`;
+const qs = new URLSearchParams(location.search);
+const matchId = (qs.get('match') || '5923').replace(/[^0-9]/g,'');
+const refreshMs = Math.max(2000, Number(qs.get('refresh') || 2000));
+const apiUrl = `/.netlify/functions/score?match=${matchId}`;
 
-function deepFind(o,k){if(!o||typeof o!=='object')return undefined;if(Object.prototype.hasOwnProperty.call(o,k))return o[k];for(const v of Object.values(o)){const f=deepFind(v,k);if(f!==undefined)return f}}
-function parse(x){if(!x)return{};if(typeof x==='object')return x;try{return JSON.parse(x)}catch{return{}}}
-function clean(x){return String(x??'').replace(/\s+/g,' ').trim()}
-function abbr(n){const w=clean(n).split(' ').filter(Boolean);return (w.length===1?w[0].slice(0,3):w.map(x=>x[0]).join('').slice(0,4)).toUpperCase()}
-function logo(p){return p?`/.netlify/functions/score?logo=${encodeURIComponent(p)}`:''}
-
-function clamp(v){return Math.max(0,Math.min(255,v))}
-function rgbToHex(r,g,b){
-  return '#'+[r,g,b].map(v=>clamp(Math.round(v)).toString(16).padStart(2,'0')).join('');
-}
-function mix(c1,c2,t){
-  const a=[parseInt(c1.slice(1,3),16),parseInt(c1.slice(3,5),16),parseInt(c1.slice(5,7),16)];
-  const b=[parseInt(c2.slice(1,3),16),parseInt(c2.slice(3,5),16),parseInt(c2.slice(5,7),16)];
-  return rgbToHex(a[0]*(1-t)+b[0]*t,a[1]*(1-t)+b[1]*t,a[2]*(1-t)+b[2]*t);
-}
-function pleasant(hex){
-  // Pull extreme colors slightly toward a broadcast-friendly mid tone.
-  return mix(hex,'#1f5f7f',0.24);
-}
-function extractLogoColor(img,fallback){
-  try{
-    const c=document.createElement('canvas'),ctx=c.getContext('2d',{willReadFrequently:true});
-    c.width=40;c.height=40;ctx.drawImage(img,0,0,40,40);
-    const d=ctx.getImageData(0,0,40,40).data;
-    let buckets=new Map();
-    for(let i=0;i<d.length;i+=16){
-      const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];
-      if(a<180)continue;
-      const max=Math.max(r,g,b),min=Math.min(r,g,b);
-      if(max>235&&min>225)continue; // white
-      if(max<35)continue; // near black
-      const sat=max-min;
-      if(sat<28)continue; // gray
-      const qr=Math.round(r/32)*32,qg=Math.round(g/32)*32,qb=Math.round(b/32)*32;
-      const k=`${qr},${qg},${qb}`;
-      buckets.set(k,(buckets.get(k)||0)+1);
-    }
-    let best=null,count=-1;
-    for(const [k,v] of buckets){if(v>count){best=k;count=v}}
-    if(!best)return fallback;
-    const [r,g,b]=best.split(',').map(Number);
-    return pleasant(rgbToHex(r,g,b));
-  }catch{return fallback}
-}
-function applyLogoColors(){
-  const root=document.documentElement;
-  const l=extractLogoColor(batLogo,'#174f82');
-  const r=extractLogoColor(bowlLogo,'#167887');
-  root.style.setProperty('--left',l);
-  root.style.setProperty('--left2',mix(l,'#ffffff',0.18));
-  root.style.setProperty('--right',r);
-  root.style.setProperty('--right2',mix(r,'#ffffff',0.18));
-}
-
-function bclass(v){const s=String(v).toLowerCase();if(s.includes('w'))return'ball w';if(s==='4'||s==='6')return'ball boundary';if(/[a-z]/.test(s))return'ball extra';return'ball'}
-function ballsLeft(ov,max=20){ov=Number(ov||0);const w=Math.floor(ov),b=Math.round((ov-w)*10);return Math.max(0,max*6-(w*6+b))}
-function num(v,d=0){const n=Number(v);return Number.isFinite(n)?n:d}
-function first(obj,names,def=0){for(const n of names){if(obj&&obj[n]!==undefined&&obj[n]!==null)return obj[n]}return def}
-
-
-function flattenEvents(inn){
-  const out=[];
-  const ev=inn?.events||{};
-  for(const arr of Object.values(ev)){
-    if(Array.isArray(arr)) for(const x of arr) out.push(x);
+function deepFind(obj,key){
+  if(!obj || typeof obj !== 'object') return undefined;
+  if(Object.prototype.hasOwnProperty.call(obj,key)) return obj[key];
+  for(const v of Object.values(obj)){
+    const f=deepFind(v,key);
+    if(f!==undefined) return f;
   }
-  out.sort((a,b)=>new Date(a.stamp||0)-new Date(b.stamp||0));
-  return out;
 }
-function isLegalBall(ev){
-  if(ev?.isLegalDelivery===false) return false;
-  const r=String(ev?.run??'').toLowerCase();
-  if(r==='si'||r==='rt'||r.includes('wd')||r.includes('nb')) return false;
-  return true;
+function parseDetails(raw){
+  if(!raw) return {};
+  if(typeof raw === 'object') return raw;
+  try{return JSON.parse(raw)}catch{return {}}
 }
-function currentPartnership(inn){
-  const events=flattenEvents(inn);
-  const currentRuns=Number(inn?.runs||0);
-  let lastWicketRuns=0, lastWicketTime=0;
-  for(const ev of events){
-    const run=String(ev?.run??'').toUpperCase();
-    const score=String(ev?.score??'');
-    const wicketLike=run.includes('W');
-    if(wicketLike){
-      const m=score.match(/^(\d+)\/(\d+)/);
-      if(m) lastWicketRuns=Number(m[1]);
-      lastWicketTime=new Date(ev.stamp||0).getTime();
-    }
+function cleanName(s){ return (s||'').replace(/\s+/g,' ').trim(); }
+function abbrev(name){
+  const words=cleanName(name).split(' ').filter(Boolean);
+  if(words.length===1) return words[0].slice(0,3).toUpperCase();
+  return words.map(w=>w[0]).join('').slice(0,4).toUpperCase();
+}
+function logoUrl(path){ return path ? `/.netlify/functions/score?logo=${encodeURIComponent(path)}` : ''; }
+function ballClass(v){
+  const s=String(v).toLowerCase();
+  if(s.includes('w')) return 'ball w';
+  if(s==='4'||s==='6') return 'ball boundary';
+  if(/[a-z]/.test(s)) return 'ball extra';
+  return 'ball';
+}
+function ballsRemaining(overs,maxOvers=20){
+  const ov=Number(overs||0);
+  const whole=Math.floor(ov);
+  const balls=Math.round((ov-whole)*10);
+  return Math.max(0,maxOvers*6-(whole*6+balls));
+}
+function latestMatchHost(payload){
+  if(payload && typeof payload==='object' && 'score_details' in payload) return payload;
+  if(!payload || typeof payload!=='object') return payload;
+  for(const v of Object.values(payload)){
+    const f=latestMatchHost(v);
+    if(f) return f;
   }
-  let balls=0;
-  for(const ev of events){
-    const t=new Date(ev.stamp||0).getTime();
-    if(t>lastWicketTime && isLegalBall(ev)) balls++;
-  }
-  return {runs:Math.max(0,currentRuns-lastWicketRuns),balls};
+  return payload;
 }
 
 function render(payload){
- const raw=deepFind(payload,'score_details');
- const d=parse(raw);
- const e=d.extraDetails||deepFind(payload,'extraDetails')||{};
- const a=Number(d.activeInnings||deepFind(payload,'activeInnings')||1);
- const i1=d.inning1||{},i2=d.inning2||{},inn=d['inning'+a]||{};
- const t1=e.team1||i1.teamName||'Team 1',t2=e.team2||i2.teamName||'Team 2';
- const batting=a===1?t1:t2;
- const lp=a===1?e.team1Logo:e.team2Logo, rp=a===1?e.team2Logo:e.team1Logo;
- batLogo.onload=applyLogoColors;bowlLogo.onload=applyLogoColors;
- batLogo.src=logo(lp||'');bowlLogo.src=logo(rp||'');
- batLogo.style.display=lp?'block':'none';bowlLogo.style.display=rp?'block':'none';
+  const host=latestMatchHost(payload)||payload;
+  const details=parseDetails(host.score_details ?? deepFind(payload,'score_details'));
+  const extra=details.extraDetails || host.extraDetails || deepFind(payload,'extraDetails') || {};
+  const active=Number(details.activeInnings || host.activeInnings || deepFind(payload,'activeInnings') || 1);
+  const i1=details.inning1||{};
+  const i2=details.inning2||{};
+  const activeInn=details[`inning${active}`]||{};
 
- const b1=inn.batter1||{},b2=inn.batter2||{},bw=inn.bowler||{};
- b1name.textContent=clean(b1.name)||'BATTER 1'; b2name.textContent=clean(b2.name)||'BATTER 2';
- b1stat.textContent=`${b1.run??0}${b1.onStrike?'*':''} (${b1.ball??0})`;
- b2stat.textContent=`${b2.run??0}${b2.onStrike?'*':''} (${b2.ball??0})`;
- teamShort.textContent=abbr(batting);mainScore.textContent=`${inn.runs??0}/${inn.wickets??0}`;mainOvers.textContent=`${inn.overs??0} OV`;
- bowlerName.textContent=clean(bw.name)||'BOWLER';bowlerStat.textContent=bw.name?`${bw.wicket??0}/${bw.run??0} (${bw.over??0})`:'—';
+  const team1=extra.team1 || i1.teamName || 'Team 1';
+  const team2=extra.team2 || i2.teamName || 'Team 2';
+  const battingTeam = active===1 ? team1 : team2;
+  const bowlingTeam = active===1 ? team2 : team1;
 
- // Extras: support several common field names without inventing values.
- const ex=inn.extras||d.extras||deepFind(payload,'extras')||{};
- const wd=num(first(ex,['wides','wide','wd'],first(inn,['wides','wide','wd'],0)));
- const nb=num(first(ex,['noBalls','noballs','no_balls','nb'],first(inn,['noBalls','noballs','nb'],0)));
- const by=num(first(ex,['byes','bye','b'],first(inn,['byes','bye'],0)));
- const lb=num(first(ex,['legByes','legbyes','leg_byes','lb'],first(inn,['legByes','legbyes'],0)));
- let xt=first(ex,['total','extras','totalExtras'],undefined);
- if(xt===undefined)xt=first(inn,['extras','extraRuns','totalExtras'],undefined);
- if(typeof xt==='object'||xt===undefined)xt=wd+nb+by+lb;
- extras.textContent=`EXTRAS ${xt} • WD ${wd} NB ${nb} B ${by} LB ${lb}`;
+  const batLogoPath = active===1 ? extra.team1Logo : extra.team2Logo;
+  const bowlLogoPath = active===1 ? extra.team2Logo : extra.team1Logo;
 
- // Current partnership: prefer explicit API fields; otherwise derive from ball-by-ball events.
- const cp=inn.partnership||inn.currentPartnership||d.currentPartnership||deepFind(payload,'currentPartnership')||{};
- let cpr=first(cp,['runs','run','partnershipRuns','currentRuns'],first(inn,['partnershipRuns','currentPartnershipRuns'],null));
- let cpb=first(cp,['balls','ball','partnershipBalls','currentBalls'],first(inn,['partnershipBalls','currentPartnershipBalls'],null));
- if(cpr===null||cpb===null){
-   const calc=currentPartnership(inn); cpr=calc.runs; cpb=calc.balls;
- }
- partnership.textContent=`CP - ${cpr} R IN ${cpb} B`;
+  document.getElementById('batLogo').src=logoUrl(batLogoPath||'');
+  document.getElementById('bowlLogo').src=logoUrl(bowlLogoPath||'');
+  document.getElementById('batLogo').style.display=batLogoPath?'block':'none';
+  document.getElementById('bowlLogo').style.display=bowlLogoPath?'block':'none';
 
- // Chase information ONLY when team 2 is batting.
- if(a===2){
-   const target=num(i1.runs)+1;
-   const need=Math.max(0,target-num(i2.runs));
-   const left=ballsLeft(i2.overs,20);
-   const req=left>0&&need>0?(need/(left/6)).toFixed(2):'—';
-   chase.textContent=`TARGET ${target} • NEED ${need} FROM ${left} B • RRR ${req}`;
- } else {
-   chase.textContent='';
- }
+  const b1=activeInn.batter1||{};
+  const b2=activeInn.batter2||{};
+  document.getElementById('b1name').textContent = cleanName(b1.name)||'Batter 1';
+  document.getElementById('b2name').textContent = cleanName(b2.name)||'Batter 2';
+  document.getElementById('b1stat').textContent = `${b1.run??0}${b1.onStrike?'*':''} (${b1.ball??0})`;
+  document.getElementById('b2stat').textContent = `${b2.run??0}${b2.onStrike?'*':''} (${b2.ball??0})`;
+  document.getElementById('battingTeamLabel').textContent = battingTeam;
 
- const crr=inn.runRate??inn.crr??'—';
- rates.textContent=`CRR ${crr}`;
+  const bow=activeInn.bowler||{};
+  document.getElementById('bowlerName').textContent = cleanName(bow.name)||'Bowler';
+  document.getElementById('bowlerStat').textContent = bow.name
+    ? `${bow.wicket??0}/${bow.run??0} (${bow.over??0})`
+    : '—';
+  document.getElementById('bowlingTeamLabel').textContent = bowlingTeam;
 
- balls.innerHTML='';
- const stack=inn.currentRunStack||inn.thisOver||[];
- stack.slice(-8).forEach(v=>{const s=document.createElement('span');s.className=bclass(v);s.textContent=String(v).toUpperCase();balls.appendChild(s)});
- if(!stack.length)balls.textContent='—';
+  document.getElementById('teamShort').textContent=abbrev(battingTeam);
+  document.getElementById('mainScore').textContent=`${activeInn.runs??0}/${activeInn.wickets??0}`;
+  document.getElementById('mainOvers').textContent=`OVERS ${activeInn.overs??0}`;
+  document.getElementById('crr').textContent=`CRR ${activeInn.runRate ?? '—'}`;
 
- err.style.display='none';
+  const balls=document.getElementById('balls');
+  balls.innerHTML='';
+  const stack=activeInn.currentRunStack||[];
+  stack.slice(-8).forEach(v=>{
+    const el=document.createElement('span');
+    el.className=ballClass(v);
+    el.textContent=String(v).toUpperCase();
+    balls.appendChild(el);
+  });
+  if(!stack.length) balls.textContent='—';
+
+  const ctx=document.getElementById('inningsContext');
+  const eq=document.getElementById('equation');
+  const rrr=document.getElementById('rrr');
+
+  const matchEnded = details.isMatchEnded ?? host.isMatchEnded ?? deepFind(payload,'isMatchEnded');
+  const live = details.isLive ?? host.isLive ?? deepFind(payload,'isLive');
+
+  if(active===1){
+    ctx.textContent=`${team1.toUpperCase()} BATTING • 1ST INNINGS`;
+    eq.textContent=`${bowlingTeam.toUpperCase()} BOWLING`;
+    rrr.textContent='RRR —';
+  } else {
+    const target=(i1.runs??0)+1;
+    const current=i2.runs??0;
+    const need=Math.max(0,target-current);
+    const left=ballsRemaining(i2.overs,20);
+    const calcRrr=(left>0 && need>0)?(need/(left/6)).toFixed(2):'—';
+    ctx.textContent=`${team1.toUpperCase()} ${i1.runs??0}/${i1.wickets??0} (${i1.overs??0})`;
+    eq.textContent = extra.message || `TARGET ${target} • NEED ${need} FROM ${left} BALLS`;
+    rrr.textContent=`RRR ${calcRrr}`;
+  }
+
+  if(matchEnded){
+    eq.textContent=extra.message || 'MATCH COMPLETE';
+  } else if(!live && extra.message){
+    eq.textContent=extra.message;
+  }
+
+  document.getElementById('err').style.display='none';
 }
-async function load(){try{const r=await fetch(apiUrl,{cache:'no-store'});if(!r.ok)throw Error(`HTTP ${r.status}`);render(await r.json())}catch(e){err.style.display='block';err.textContent='Unable to load DCL score: '+e.message}}
-load();setInterval(load,refreshMs);
+
+async function load(){
+  try{
+    const r=await fetch(apiUrl,{cache:'no-store'});
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
+    render(await r.json());
+  }catch(e){
+    const er=document.getElementById('err');
+    er.style.display='block';
+    er.textContent='Unable to load DCL score: '+e.message;
+  }
+}
+load();
+setInterval(load,refreshMs);
 </script>
 </body>
 </html>
