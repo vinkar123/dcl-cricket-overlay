@@ -1,32 +1,27 @@
-DCL MODERN PRISM OVERLAY — WEBSITE LOGO DISCOVERY + 2 SECOND REFRESH
+DCL SLEEK GRADIENT LIVE OVERLAY V3
 
-GitHub structure:
-  index.html
-  netlify.toml
-  README.txt
-  netlify/functions/score.mjs
+Design:
+- Very thin two-line broadcast ribbon inspired by the supplied reference.
+- Gradient transition across the ribbon.
+- Batting team logo at far left; bowling team logo at far right.
+- Current batters, central score/overs, current bowler.
+- DCL logo remains top-left.
+- Transparent background for PRISM.
 
-DCL league logo:
-- Displayed at the TOP-LEFT of the overlay.
-- Primary source is dynamic:
-    /.netlify/functions/score?leagueLogo=1
-- The Netlify function inspects the CURRENT Dallas Cricket League website
-  (and its current JavaScript asset bundles) to locate the logo actually
-  used by the website.
-- It intentionally ignores generic PWA icons such as logo192/logo512.
-- The discovered website logo is re-checked every 30 minutes.
-- If DCL changes its logo or asset filename in the future, the overlay can
-  follow that change automatically as long as the current website exposes it.
-- If website discovery fails, index.html falls back to the exact DCL logo
-  supplied by the user. The fallback is embedded directly in index.html;
-  there is NO assets folder.
+Second line:
+- Extras total + WD / NB / B / LB breakdown.
+- Current partnership shown as: CP - xx R IN xx B, when DCL exposes current partnership fields.
+- Target / Need / RRR shown ONLY during innings 2.
+- CRR and ball-by-ball current over.
 
-Live score:
-- DCL API is proxied by netlify/functions/score.mjs.
-- Default score refresh interval: 2 seconds.
+Refresh:
+- 2 seconds.
 
-PRISM URL:
-  https://YOUR-SITE.netlify.app/?match=5923
+GitHub:
+index.html
+netlify.toml
+README.txt
+netlify/functions/score.mjs
 
-Future matches:
-  Only change the match number.
+PRISM:
+https://YOUR-SITE.netlify.app/?match=5923
