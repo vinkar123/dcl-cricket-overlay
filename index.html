@@ -39,10 +39,10 @@ html,body{
 }
 #err{
   display:none; margin-bottom:4px;
-  background:#7f1d1d;color:#fff;padding:8px 10px;border-radius:8px;font-size:20px
+  background:#7f1d1d;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px
 }
 .mainbar{
-  height:58px;
+  height:70px;
   display:grid;
   grid-template-columns: 1.12fr 1fr 1.12fr;
   border-radius:10px 10px 0 0;
@@ -64,13 +64,13 @@ html,body{
   display:flex;align-items:baseline;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
 .player-name{
-  font-size:22px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+  font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
 .player-stat{
-  font-size:21px;color:var(--muted);font-weight:800
+  font-size:16px;color:var(--muted);font-weight:800
 }
 .subline{
-  margin-top:3px;font-size:20px;color:var(--muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+  margin-top:4px;font-size:16px;color:var(--muted);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
 .center-score{
   background:linear-gradient(135deg,var(--blue),#143c75);
@@ -85,13 +85,13 @@ html,body{
   font-size:25px;font-weight:900;letter-spacing:.3px;text-transform:uppercase;
 }
 .score-stack{text-align:center}
-.big-score{font-size:35px;font-weight:900;line-height:1}
-.score-meta{font-size:20px;font-weight:800;color:#d8ecff;margin-top:2px}
+.big-score{font-size:36px;font-weight:900;line-height:1}
+.score-meta{font-size:17px;font-weight:900;color:#d8ecff;margin-top:2px}
 .rate{
-  text-align:right;font-size:20px;font-weight:800;color:#d8ecff;line-height:1.3
+  text-align:right;font-size:18px;font-weight:900;color:#d8ecff;line-height:1.25
 }
 .infobar{
-  min-height:25px;
+  min-height:38px;
   background:rgba(7,26,50,.98);
   color:white;
   display:grid;
@@ -99,8 +99,8 @@ html,body{
   align-items:center;
   padding:0 9px;
   border-radius:0 0 10px 10px;
-  font-size:20px;
-  font-weight:800;
+  font-size:16px;
+  font-weight:900;
   letter-spacing:.1px;
 }
 .info-left{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -109,7 +109,7 @@ html,body{
 .ball{
   min-width:20px;height:20px;padding:0 4px;border-radius:10px;
   display:inline-flex;align-items:center;justify-content:center;
-  background:#e8eef4;color:#14263c;font-size:18px;font-weight:900
+  background:#e8eef4;color:#14263c;font-size:12px;font-weight:900
 }
 .ball.w{background:var(--danger);color:white}
 .ball.boundary{background:var(--cyan);color:white}
@@ -123,6 +123,96 @@ html,body{
   .player-name{font-size:12px}
   .infobar{font-size:10px}
 }
+
+/* Mobile-stream readability enhancements */
+#extrasInfo,
+#partnershipInfo{
+  font-size:16px;
+  font-weight:900;
+}
+#equation{
+  font-size:18px;
+  font-weight:900;
+  color:#ffffff;
+}
+#inningsContext{
+  font-size:15px;
+  font-weight:900;
+}
+#teamShort{
+  font-size:25px;
+  font-weight:900;
+}
+#mainScore{
+  font-size:36px;
+  font-weight:900;
+}
+#mainOvers{
+  font-size:17px;
+  font-weight:900;
+}
+#crr,#rrr{
+  font-size:18px;
+  font-weight:900;
+}
+#balls .ball{
+  min-width:24px;
+  height:24px;
+  border-radius:12px;
+  font-size:12px;
+}
+
+/* Do NOT shrink the key information on phone-sized renderers. */
+@media(max-width:900px){
+  .mainbar{height:68px;}
+  .team-logo{width:44px;height:44px;}
+  .player-name{font-size:17px !important;}
+  .player-stat{font-size:15px !important;}
+  .subline{font-size:15px !important;font-weight:800 !important;}
+  .center-team{font-size:23px !important;}
+  .big-score{font-size:34px !important;}
+  .score-meta{font-size:16px !important;}
+  .rate,#crr,#rrr{font-size:17px !important;}
+  .infobar{min-height:36px;font-size:15px !important;}
+  #equation{font-size:17px !important;}
+  #extrasInfo,#partnershipInfo{font-size:15px !important;}
+}
+
+
+/* Fixed Extras + Partnership lower bar */
+.infobar{
+  column-gap:14px;
+  padding:0 18px;
+}
+#extrasInfo{
+  font-size:16px;
+  font-weight:900;
+}
+#partnershipInfo{
+  font-size:17px;
+  font-weight:900;
+  color:#0a2440;
+}
+#equation{
+  font-size:18px;
+  font-weight:900;
+}
+.info-right{
+  font-size:15px;
+  font-weight:900;
+}
+@media(max-width:900px){
+  .infobar{
+    grid-template-columns:1.28fr .95fr 1.55fr 1.25fr !important;
+    column-gap:8px;
+    padding:0 10px;
+  }
+  #extrasInfo{font-size:14px !important;}
+  #partnershipInfo{font-size:15px !important;}
+  #equation{font-size:16px !important;}
+  .info-right{font-size:13px !important;}
+}
+
 </style>
 </head>
 <body>
@@ -178,9 +268,11 @@ html,body{
   </div>
 
   <div class="infobar">
-    <div id="inningsContext" class="info-left">FIRST INNINGS</div>
+    <div id="extrasInfo" class="info-left">EXTRAS 0 • WD 0 NB 0 B 0 LB 0</div>
+    <div id="partnershipInfo" class="info-mid">CP - 0 R in 0 B</div>
     <div id="equation" class="info-mid">Match information loading…</div>
     <div class="info-right">
+      <span id="inningsContext"></span>
       <span class="label">THIS OVER</span>
       <span id="balls"></span>
     </div>
@@ -315,6 +407,31 @@ function render(payload){
   document.getElementById('mainOvers').textContent=`OVERS ${activeInn.overs??0}`;
   document.getElementById('crr').textContent=`CRR ${activeInn.runRate ?? '—'}`;
 
+  // EXTRAS: DCL score_details uses activeInn.extra (singular).
+  const ex = activeInn.extra || {};
+  const wd = Number(ex.wide ?? ex.wides ?? ex.wd ?? 0);
+  const nb = Number(ex.noBall ?? ex.noBalls ?? ex.nb ?? 0);
+  const by = Number(ex.byes ?? ex.bye ?? ex.b ?? 0);
+  const lb = Number(ex.lb ?? ex.legByes ?? ex.legbyes ?? 0);
+  const exTotal = Number(ex.total ?? (wd + nb + by + lb));
+  document.getElementById('extrasInfo').textContent =
+    `EXTRAS ${exTotal} • WD ${wd} NB ${nb} B ${by} LB ${lb}`;
+
+  // CURRENT PARTNERSHIP: use an explicit DCL partnership field if present;
+  // otherwise derive it from the current innings event history.
+  const cpObj = activeInn.currentPartnership || activeInn.partnership || {};
+  let cpRuns = cpObj.runs ?? cpObj.run ?? cpObj.partnershipRuns ?? null;
+  let cpBalls = cpObj.balls ?? cpObj.ball ?? cpObj.partnershipBalls ?? null;
+
+  if (cpRuns === null || cpBalls === null) {
+    const cp = currentPartnership(activeInn);
+    cpRuns = cp.runs;
+    cpBalls = cp.balls;
+  }
+
+  document.getElementById('partnershipInfo').textContent =
+    `CP - ${cpRuns} R in ${cpBalls} B`;
+
   const balls=document.getElementById('balls');
   balls.innerHTML='';
   const stack=activeInn.currentRunStack||[];
@@ -334,7 +451,7 @@ function render(payload){
   const live = details.isLive ?? host.isLive ?? deepFind(payload,'isLive');
 
   if(active===1){
-    ctx.textContent=`${team1.toUpperCase()} BATTING • 1ST INNINGS`;
+    ctx.textContent='';
     eq.textContent=`${bowlingTeam.toUpperCase()} BOWLING`;
     rrr.textContent='RRR —';
   } else {
@@ -343,7 +460,7 @@ function render(payload){
     const need=Math.max(0,target-current);
     const left=ballsRemaining(i2.overs,20);
     const calcRrr=(left>0 && need>0)?(need/(left/6)).toFixed(2):'—';
-    ctx.textContent=`${team1.toUpperCase()} ${i1.runs??0}/${i1.wickets??0} (${i1.overs??0})`;
+    ctx.textContent='';
     eq.textContent = extra.message || `TARGET ${target} • NEED ${need} FROM ${left} BALLS`;
     rrr.textContent=`RRR ${calcRrr}`;
   }
